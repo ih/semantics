@@ -1,0 +1,424 @@
+* goal
+understand how to learn angelic semantics and high-level actions by solving simple problems.  
+
+the basic idea is we have actions we can take in the world and some goal that can be achieved by finding the correct sequence of actions
+
+many goals require similar sequences of actions so we would like to represent patterns of actions (using abstraction)
+
+we would like to be able to plan with the patterns/abstractions of actions
+* philosophy
+we begin with the idea that the main objects we deal with are machines i.e. states and actions or registers and primitive operations as described in chapter 5 of sicp
+
+we can understand numbers as symbols or common settings of the registers and common operations on the registers 
+
+data is a sequence of (partial) states and transitions in a machine (this includes subsequences) 
+
+a goal is a partial specification of state (perhaps in terms of another state or time i.e. has variables defined somewhere else), high level action semantics sort of say what goal an action can achieve in terms of the initial state of an action
+** look at chapter 5 of SICP to get a better understanding of the nature of program and programming language (also the first chapter of bob harpers text book)
+*** write out data and control paths for programs that do the same thing, but where one is more efficient than the other
+what is a programming language?
+a programming language is a set of actions
+what is a program?
+a set of sequences of states in a machine
+
+** problem
+a problem is a partial specification of state in some machine
+* background
+** Angelic Semantics for High-level Actions
+by Bhaskara Marthi, Stuart Russell, and Jason Wolfe also http://videolectures.net/icml09_russell_ithla/
+**** DONE introduction
+ This paper uses the idea of angelic nondeterminism to 
+****** questions
+******** DONE how do descriptions of effects follow logically from the refinement hierarchy and descriptions of the primitive actions?
+an exact description of an action is the set of states transitions to, s', as a function of an initial state, s.  Given descriptions of the effects of primitive actions we can determine the effects (set of states) for high-level actions (and sequences of actions) in a straight-forward way.
+******** STRIPS
+********** what is a precondition-effect description of a macro-operator in STRIPS?
+the effect of a macro-operator on the preconditions of other actions?
+********** why does a STRIPS macro-operator have exactly one refinement?
+******** DONE what is a propositional fluent?
+A fluent is a function whose domain is the space Sit of situations. If the range of the function is (true, false), then it is called a propositional fluent.
+
+******** DONE how do complete descriptions support proofs that a sequence cannot reach the goal under any refinement?
+by showing the goal state exists outside the complete description of the final action in the sequence
+******** DONE how do sound descriptions support proofs that a sequence surely reaches the goal under some refinement?
+by showing the goal state is in the sound description of the last action in the sequence
+****** DONE summary
+******** planning with high-level actions (HLAs) is clearly useful in dealing w/ complexity, but the true power of being able to form high-level plans w/o complete expansion (refinement) of HLAs has not been accomplished i.e.  current methods do not have the downward refinement property
+******** we need semantics (descriptions of the effects) of HLAs in order to get downward refinement. this paper presents a possible formulation of semantics using the idea of angelic nondeterminism and demonstrates application to a simple blocksworld-type problem
+******** the main idea is to define the effect of an action as the set of states the action transitions to (as a function of another state).  now given effect of an HLA we say the HLA is a solution if the goal state exists inside the effect description.  The existence of the goal state is what makes the semantics angelic, if effect could only consist of goals states i.e. every state in the effect was a goal then the semantics would be demonic
+******** we need a way to concisely describe the set of effects of actions (set of states).  One way is to use super and subsets (known as complete and sound descriptions respectively)  
+**** hierarchical planning
+hierarchical planning is performed with high-level actions.  This allows us to treat sequences of actions like primitives.
+****** DONE planning problems
+a planning problem consists of a set of states, primitive actions, and a transition function, which tells how actions effect state
+******** thoughts
+********** program representation of planning problems
+************ state is the environment (set of assignments to variables)
+************ actions are expressions
+************ transition function defined by the semantics of the language 
+************ what about function programming?
+************** state consists of a single value
+****** DONE hierarchy and refinements
+a hierarchical planning problem consists of an action hierarchy paired with a planning problem.  the action hierarchy provides high-level actions and their refinements.  The refinement is the composition or sequence of actions that make up the high-level action (these "sub-actions" can come from the set of all high-level and primitive actions).  
+******** questions
+********** DONE how is a high-level action defined?
+in the paper's chosen representation a high-level action is defined in terms of its immediate refinements, which are a sequence of actions from the set of all possible actions
+************ DONE what is A^{~}*?
+a sequence of actions in A^{~} the set of all actions (high-level and primitive)
+************** DONE doesn't this permit actions to refine to themselves (recursive actions) or to actions higher than themselves?
+yes, but this isn't a problem as long as every high-level action has SOME primitive refinement.  remember we are using angelic semantics. 
+********** how can abstraction be used to learn HLAs nav, navigate, and moveblock
+**** high-level action descriptions
+****** DONE theorem 1 comment
+it seems like if you have no control over the definition of the action hierarchy it should be "easy" to find difficult planning problems
+****** DONE what is a conditional effect?
+a description that can contain conditional clauses so that one may specify different possible outcomes for an action, without the conditional an action only does "one" thing 
+******** DONE what is an effect?
+a description of the set of states one reaches after taking a given action, e.g. taking the action right changes the state such that pos has x changed (or moved to the right however that is defined)
+****** DONE complete descriptions
+a complete description of an action defines a superset of the reachable state set of the action.  complete descriptions can let us plan in a top-down manner by telling us when to stop i.e. when we are refining a plan an the goal state is not in the complete description we should stop refining the current plan and change it 
+******** DONE definition of complete reachable set?
+this is the set you get by taking the initial state set and applying the first action in the sequence to get a new state set (a complete one if you use the complete descriptions for the action to get the new set), then applying the second action to this state set and continuing on.
+******** DONE what does theorem 2 say?
+any primitive refinement of the high level plan a will end up in the complete reachable set of a
+********** DONE what is R*(a)?
+the set of primitive refinements of a
+****** DONE sound descriptions
+sound descriptions help us plan top-down by telling us when to continue refining a current plan i.e. we continue refining a plan if the goal state is in the sound description of the plan
+******** DONE why is the plan Navigate(4,3) GetL, Navigate(2,3), PutL guaranteed to reach the goal?
+the sequence of states in the sound description ends in the goal state
+********** DONE what is the sound description for Nav(4,3)?
+Pos(2,3) and Free(4,3) and forAll x Free(x,4) = t so +Pos(4,3) is possible etc...
+******** DONE what does theorem 4 say?
+it's basically an algorithm for refining a sound plan by choosing sequence of states that lead to the goal using sound descriptions then refining each of the actions in the plan using these states.
+********** DONE what is S_N?
+a goal state in the sound description of the last action
+********** DONE how does choosing S_i-1 work given S_i?
+we find s_i-1 s.t. s_i is in the sound description of a_i from s_i-1 i.e. we finda  state for which we know there is a refined primitve plan from s_i-1 to s_i
+****** sound-intersecting descriptions
+******** why does adding the gear to the state make picking out concrete achievable states require detailed conditioning on the source state?
+in order to know the value for the gear predicate for any state we have to have complete information on the history of actions taken.  since we are looking at sound descriptions we have to find a subset of reachable states.  this means for each state in the sound description we must know the value of the gear predicate, which requires a lot of information
+******** why is the semantics based on the direction the gripper faces?
+******** DONE how is a sound-intersecting set different from a complete set?
+the sound-intersecting set does not necessarily contain all the reachable states
+******** why isn't the definition for an intersecting description the definition for a sound-intersecting description?
+********** DONE is a sound-intersecting description necessarily an intersecting description?
+no because these aren't the same type of objects, an intersecting description is a function where a sound-intersecting description is a set of functions
+********** why isn't this pattern (defining a function then making the description a set of functions) used in the definition of sound or complete descriptions
+************ what happens if we try to work everything out using the intersecting description?  can we use this notion to guide top-down planning in the same way we use sound descriptions?
+************** try to prove an analogue of theorem 3/5 using the intersecting description
+****** DONE reasoning with descriptions
+******** DONE what does it mean to progress and regress sets?
+if you have a sequence of actions you'd like to keep track of the current set of possible states as you take each action using the descriptions of the actions.  to progress a set is to figure out how given the current description you can combine it with the description of the action you are about to take to get the next description.
+********** DONE give an example of how progression works using the plan Navigate(4,3),GetL,Navigate(2,3),PutL
+doing this wasn't that useful for understanding
+************ start state
+pos(2,3) and FACINGL etc.
+************ state description after Navigate(4,3)
+************** condition
+pos(2,3) and Free(4,3) and Forall x Free(x,4) = true
+************** effect
+pos(4,3) ~+-FacingR
+************ state description after GetL
+************** condition
+pos(4,3) and empty and facingL and L(3,4) and at(c,3,3) and clear(C) and on(c,b)
+************** effect
+-clear(b) and -free(3,3) and have(c)
+************** 
+********** DONE how is a set of states represented with DNF?
+each conjunction specifies predicates that define a set of states, the disjunction expresses different possible sets of states (from the conditional effects)
+
+************ DONE progression of the DNF 
+we start with the conditions for the first action as the set of possible states (actually a set for each conditional effect), now the effect tells us which predicates to remove or add and the result is the set of possible states after taking the action.  when we take the next action look at each conjunction individually and concatenate conditions for effects then repeat the process, we join all the possibilities by disjunction
+************** DONE apply each conditional effect to each clause (conjunction) individually 
+this is like looking at an individual possibility from a previous step and pushing it forward in time
+**************** DONE progression of an individual clause through a conditional effect
+we add onto the current clause the conditions (since they restrict the set of states) and then the effect will tell us how to manipulate this clause (e.g. +pred tells us to add pred to the clause etc), the result is a new description for a possible set of states
+****************** conjoin the effect conditions onto the clause
+this restricts the current set of states to only those for which the effect of the action will hold
+****************** if a contradiction return false otherwise make all added literals true, all deleted literals false
+******************** why would there be literals in a description?
+perhaps after evaluation, 
+****************** remove propositions if known true and possibly-deleted
+************** DONE then disjoin the results from each conditional effect 
+each conditional effect represents the creation for a different possible set of states so we create a disjunction
+**** DONE hierarchical planning algorithm
+top-level plans are generated and checked to see if their complete description complete description show them successful.  sound descriptions are also checked to determine whether they are definitely successful, in which case they are decomposed into a primitive refinement, otherwise they are refined and checked again against their complete and sound descriptions
+****** DONE how does HierarchicalForwardSearch(s_0,G,H) work?
+generates sets of top-level plans and stops if a successful one is found.  these sets are passed to FindPrimRef.  in the recursive case a limit on the amount a plan can be refined to prevent infinite recursion.
+******** DONE arguments
+********** DONE s_0
+an initial state from which actions are progressed to get reachable states
+********** DONE G
+a set of goal states, used in SucceedsComplete and SucceedsSound
+********** DONE H
+an action hierarchy used to generate top-level plans in TopLevelPlan
+************ DONE What does TopLevelPlan(H,i) do?
+it returns the first i top level plans
+************** DONE What is i
+the number of top-level plans to return 
+****** DONE how does FindPrimRef(s_0,a,G) work?
+It uses a stack of plans and tests each one to see if it is successful according to a complete description, if it is then a test is used to determine if it is successful according to a sound description.  if it is complete and sound then the plan will work so it is decomposed.  if it is complete and not sound it still might work, but needs more refinement to tell so refined versions of the plan are placed on the stack of plans.  if a plan is not complete there is no way for it to succeed so it is thrown out. 
+******** DONE arguments
+an initial state, goal states, and a stack of plans sent by HieararchicalForwardSearch
+******** DONE How does SucceedsComplete(s_0,a,G) work?
+It finds the reachable states for the first action from the initial state, then for each of these states finds reachable states using the second action and so on.  If the goal is a reachable state for the whole plan then SucceedsComplete returns true
+****** DONE how does Decompose work?
+a set of complete descriptions for each action is computed.  these are used to backward chain a set of states that act as intermediate goals in the plan.  the stages between states are then treated as plans to be refined in their own right by being passed to FindPrimRef 
+******** DONE what is returned by Progress(s_0,a)
+the complete descriptions for each action
+******** DONE how does regress work in the NCSTRIPS case starting from s_{i+1}?
+it works by progressing groups (conjunctive clauses) until the progression of one of them captures s_{i+1}, this clause is then specialized into a state  (from a description of a set of states), which becomes s_i 
+********** DONE what is the progression of \sigma_i
+it is a disjunction of conjunctions where each conjunctive clause represents a set of reachable states by taking an action from a previous set of states 
+****** DONE how is recursion in the action hierarchy handled?
+recursion can cause cycles in the refinement of a plan, refinement occurs both in FindPrimRef and Decompose, a depth limit for the plans limiting the number of times a plan can be refined and still be placed on the stack.  Also since decompose resets the depth, cycles in decompose are prevented by checking the call stack to make sure two calls to decompose are not the same, the example for this is Nav being decomposed to Down,Nav and the second Nav is decomposed to Up, Nav
+******** DONE what is the role of the depth condition D(a) in FindPrimRef?
+it prevents a plan from infinitely being refined and added to the stack, by limiting how many refinements can be made to any given plan
+******** DONE where is the cycle check in decompose?
+it's the starred line in FindPrimRef, it prevents a plan from being decomposed forever 
+********** DONE what is a situation where decompose would be called on the same plan?
+if a plan has a hla that calls itself exactly, e.g. Nav's second action is Nav with the same destination, this can be passed to decompose resulting in decompose of the same exact plan
+**** experiments
+**** related work
+**** discussion and conclusions
+**** ideas
+****** it might be interesting to try and use abstraction to define the set of reachable states w/ a structured generative model
+the lgg of the set of reached states would give a complete description (assuming all reachable states were compressed)
+* problems
+** planning <==> program induction
+state is action and action is state <==> data is code and code is data
+*** program induction as planning
+start with semantics defined for all primitives of a language e.g. the lambda calculus and try to learn basic programs in this language
+
+consider actions in the world as i/o functions in the programming language (streams)
+**** issues
+***** !!! semantics
+semantics for primitive actions can be defined using the approach in the angelic semantics paper
+can this approach apply to the language primitives, for that it seems we need a clear understanding of what the state is if language constructs are to be actions (maybe look at data path and control flow diagrams in SICP ch 5)
+
+what happens semantically when we merge states in a computation (control flow or data path)?  how does state merging relate to inverse inlining (state merging is prominent in practical inductive inference methods such as learning k-reversible languages, method of k-tails for learning, bayesian model merging/hill climbing for inferring cfgs
+******* TODO make data path and controller diagrams for n! and 1, 2*1, 3*2*1, 4*3*2*1
+see what kinds of connections there are from the instances to the generalization
+try to see if one can get a semantics for n! based on start/end states of the individual computations
+****** the most primitive language
+lambda calculus? arithmetic?
+*** planning as program induction
+start with a simple blocks world problem and try to learn plans using program induction
+
+** the simple perceptual world
+where we address basic question of how an agent interacts with its perceptions
+*** setting
+an agent receives a single binary input (presumably with some sort of temporal structure)
+
+it's a lot like learning finite state machines, but with angelic semantics rather than reading a character at a time to determine transition we will abstract out chunks of the machine and read in substrings at a time rather than characters at a time and transition between the chunks
+
+we will try to see if the data path and controller approach leads to finding/predicting abstract patterns in this domain
+
+the actions will be to predict the next k elements in a sequence
+
+
+*** goal
+the agent receives input from its environment over time and processes it.  what the agent should be doing with the data is an open question.
+**** possible goals for an agent
+we will start with inductive inference
+***** inductive inference
+trying to predict future inputs from past 
+****** DONE inductive inference: theory and methods
+section 1 and section 7 are worth reading, the theory described in between seems too empty/weak
+
+identification in the limit does not seem like an interesting practical criteria for inductive inference.  it seems we care more about performance on a majority of data not necessarily on all or even a changing distribution over the data
+******* 2.1 Functions, Sequences, and Traces
+inductive inference where the rule space is function classes is essentially program induction
+******* 7 Practical Inference Methods
+******** 7.1 Search Spaces
+Take advantage of the structure of the hypothesis space to avoid exhaustive search e.g. bayesian model merging (using mainly merge moves to search the space)
+
+An example is if the rule classes are regular sets and we two hypotheses that are finite state machines where M_2 is M_1 with some of the states merged then the set captured by M_2 is a superset of M_1 so if M_1 is incorrect then we don't need to examine M_2 (or any state machine that produces a superset of M_1)
+
+in terms of hypotheses as computations that distinguish a set we can think of the version space idea being if a computation that produces a set does not capture a positive example then no computation that builds off of this one i.e. does even more computation for distinguishing members of the set, can capture the positive example
+********* deterministic finite state acceptor example
+********** what is the canonical tree acceptor of a set?
+from pg 5 of inference of reversible language by angluin 
+
+
+********* predicate logic subsumption relation example
+the subsumption relation says formula A is more general or subsumes B if the terms are a subset
+
+the hypotheses are logical conjunctions and can be thought of as generalizations (or subsumptions) of (example?) ground atoms
+
+if hypothesis A fails to capture a positive example then any hypothesis more specific than A (i.e. is formula A with more restrictions) does not need to be examined
+
+the converse is also something that can be used to reduce search 
+
+these ideas are used in angelic semantics to reduce search space of plans
+******** 7.2 Pruning: Forbidden Features
+the general idea is one can identify part of a hypothesis as the root cause of its failure on many examples and thus avoid examining any hypothesis that has this part
+
+in terms of hypotheses being a computation that distinguishes a set we can think of forbidden features as identifying some subcomputation that is incorrect and so we avoid putting this subcomputation into any future hypotheses
+
+maybe this can be thought of as identifying patterns/abstraction in the "dual" space
+********* enumerating context free grammars example
+CFGs are enumerated in increasing order of complexity
+
+starting from the first a grammar is tested against a sample, if the grammar fails a routine determines the first production in the grammar that can be changed to avoid failure
+
+the search through the enumerated list of grammars skips over any following grammar that contains the problem causing production (grammars in the enumeration should be similar and so some will probably have this production and be skipped)
+
+********* axiom hypotheses and oracle example
+the setting is the hypothesis space is sets of axioms that are H->P where H are conjunctions of atoms
+
+data are ground atoms that are known to be true or false and hypotheses can be used to determine the data if the data can be derived from the axioms
+
+the forbidden features idea comes into play by querying the user when a hypothesis (set of axioms) fails, one of the axioms is determined to be false through the queries and is thrown out forever
+******** 7.3 Hill Climbing
+Grammatical inference by Hill Climbing by Cook Rosenfeld and Aronson sounds a lot like bayesian program/model merging
+
+******** 7.4 Jumping to Conclusions: Plausible Features
+k-tails method is kind of like creating high-level actions in the sense that states that perform the same on small examples are collapsed together creating a possibly more general state
+
+a generalization is to have some distance measure on behavior between two states and merge them if states behave similarly under the measure
+******** 7.5 Efficient and Characterizable Methods
+constructive methods that are not heuristic
+
+constructive algorithms with guarantees exist for learning bracketed grammars, pattern languages, and k-reversible languages******* 9 Future directions
+The most significant open problem in the field is perhaps not any specific technical question, but the gap between abstract and concrete results. It would be unfortunate if the abstract results proliferated fruitlessly, while the concrete results produced little or nothing of significance beyond their very narrow domains.
+
+Paradoxically, part of the problem might be the original Gold paradigm itself. While it captures well certain gross features of the problem of natural language learning--essentially, one "lifelong" problem with data exclusively in the form of examples--it may not be wise to stretch it to try to include more and more of the "microstructure" of inference problems, or domains that consist of several related problems or that present data in a variety of forms. As useful as the Gold paradigm has been, we should not let it blind us to other important questions about the phenomena of inductive inference.
+
+Another difficulty is the paucity of practical applications to guide the formulation of appropriate theoretical questions. Applications do not simply occur; they must be invented and developed, sometimes in advance of the theory that may later explain them.
+***** compressing
+trying to store all the data received as compactly as possible
+
+*** components
+**** simulator
+consists of a program generating a binary stream and feeding this stream to the agent
+**** agent
+receives input from the simulator and processes it
+
+*** basic version
+**** simulator
+pattern generation is 1010101010...
+**** agent
+** gridworld
+gridworld is a simpler planning problem than warehouse world so it makes for a good starting point
+*** setup
+the basic setting is we have a robot in a 2d plane that can sense its position and move to positions adjacent to it
+
+**** objects
+agent
+environment
+simulator
+**** process
+***** agent
+the agent has a data stream a model and an action selection algorithm 
+the data stream is a finite list of events or states
+
+the stream abstraction in c++ can be used to model dealing with input/output
+
+how should the agent's model of the world be modeled? how does the immediate model of the world relate to knowledge accumlated over a lifetime? how does the model relate to the policy it is using for a given task?  how does representation of the task relate to knowledge?  how does knowledge affect perception?
+
+
+assume the agent has a library of functions (this is knowledge built up over time)
+
+the first thing that happens is the agent tries to unify the data with its library i.e. re-represent the data in terms of its library
+
+consciousness is a program that determines what part of the model to construct and which parts to simulate?
+
+to understand these problems more perhaps we should first model the simple perceptual world i.e.  single binary input that has a regular pattern 
+
+****** how did idsia do it?
+******* PIPE
+probabilistic incremental program evolution
+
+it seems memory cells are an important component for dealing with processing and acting in an online environment
+******** DONE how is PIPE used to learn the actions programs in the policy program?
+agents observe adjacent tile availability and have a small memory which can hold integers
+
+doesn't seem like it could represent abstract problems like the corridor move right then left then right where the amount to move is arbitrary
+******* SSA
+success story algorithm
+
+how does it use prior knowledge to guide future policy?
+******* OOPS
+******* goedel machine
+
+
+***** simulator
+the simulator determines what objects are currently active i.e. performing some sort of computation
+
+in some ways it is an interpreter where all the objects in the world are programs and it is running these programs
+
+***** environment
+** inverse turtle graphics
+
+** warehouse world
+the problem domain of "angelic semantics for high-level actions"
+
+the main idea is to find patterns in successful action sequences and treat these as high-level actions.  defining semantics for these high-level actions means finding patterns in the start/end states for the high-level actions
+*** understanding the problem
+**** learning high-level actions
+***** what is an action?
+traditionally actions have been understood in terms of states and an action transitions from one state to the next
+
+******* what is a state?
+a state is defined in terms of a set of states
+
+states are usually identified in terms of features where features are chosen so that states relevant to the problem can be distinguished with a vector of feature values
+
+a feature vector is a simple computation that takes in a set of states and outputs a single state, perhaps we can understand the generative model representation of state in this view where representation of state is basically a computation on the set of states that returns the represented state
+
+******** OPEN what are the implications of this view?
+actions are computations that transform state computations
+
+they are part of a computational model where the states are computations representing state of the world
+
+state representations are actions in a computational model where the states are true states 
+
+
+
+the work in bayesian program merging suggests a more useful model of feature and thus state may lie in representing data in terms of structured generative models
+
+The features of the warehouse world are 
+******** OPEN what are the features of 
+******** OPEN what does it mean to use a generative model as a representation of state?
+
+********* OPEN how does one use this representation to solve problems?
+******* data-centric viewpoint
+forget about states perhaps we should only think about data and cognition or intelligence is just a compact representation of this data through time
+
+under this view an action is just another source of data
+
+
+******* are there alternate more insightful conceptualizations of actions in other models of computation e.g. in terms of stateless computation (functional programming) or propagation
+	 CLOSED: [2011-07-12 Tue 23:38]
+
+
+
+a high-level action is an expression/function whose input is a state type (abstraction)  which represents a collection of states and returns a state type which represents the reachable states from the initial type using the high-level action
+
+these functions or high-level actions should make planning more efficient since they allow us make larger jumps in the search tree that are likely to lead to success based on past evidence
+****** actions and models of computation
+We can understand actions in terms of models of computation.  According to wikipedia a model of computation is "the definition of the set of allowable operations used in computation and their respective costs"
+
+Perhaps actions should be understood as operations in some model of computation e.g. agents should be represented as abstract machines.
+
+How do models of computation relate to programming languages?
+**** learning angelic semantics
+***** what are the semantics of an action?
+the semantics for an action gives information on the state transition given an action
+
+** digit recognition
+this is a problem of learning an action between abstract states with no need to form abstract actions
+*** simplify the task to its essence
+
+
+the data are a sequence of binary 2-d arrays
+
+
+
+what is the minimal problem for learning abstract states and an action between them
+
+also what is the minimal problem for learning abstract actions between non-abstract states
+
+and what is the minimal problem for learning abstract actions between abstract states

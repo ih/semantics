@@ -1,0 +1,4 @@
+* next
+* outline
+** reimplement warehouse world
+** apply abstraction code to learning high level actions

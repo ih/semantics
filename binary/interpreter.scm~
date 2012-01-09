@@ -1,0 +1,6 @@
+(define (eval expression environment)
+  (cond ((application? expression)
+         (begin
+           (store-input (get-operator expression) (get-operands expression))
+           (store-ouput (normal-evaluation expression environment))
+           (abstract (get-operator expression))))))

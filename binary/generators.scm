@@ -1,0 +1,22 @@
+;;different 1 0 patterns with varying amounts of abstraction in their generation
+(define (flip x y repetitions)
+  (if (= repetitions 0)
+      '()
+      (append (list x y) (alternate y x (- repetitions 1)))))
+
+(define (alternate x y repetitions)
+  (if (= repetitions 0)
+      '()
+      (append (list x y) (alternate x y (- repetitions 1)))))
+
+(define (cons-programs binary-string)
+  (if (null? binary-string)
+      ''()
+      (list 'cons (car binary-string) (cons-programs (cdr binary-string))))) ;use pair instead of cons
+
+(define (flatten x)
+  (if (null? x)
+      x
+      (if (not (list? x))
+          (list x)
+          (append (flatten (car x)) (flatten (cdr x))))))

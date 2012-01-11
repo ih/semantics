@@ -1,4 +1,16 @@
 * next
+define evaluate for 'cons i.e. primitive procedures
 * outline
-** reimplement warehouse world
-** apply abstraction code to learning high level actions
+** interpreter
+*** features
+**** applying semantics
+output of functions can be partially determined based on the semantics
+**** learning semantics
+common sequences of operations are abstracted and added as functions in the language
+*** applications
+**** binary string generation
+generative model for binary strings
+**** warehouse world
+the domain presented in angelic semantics papers by russell's group
+***** reimplement warehouse world
+***** apply abstraction code to learning high level actions

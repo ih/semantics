@@ -1,13 +1,18 @@
 (use-modules (srfi srfi-1))
 
-;;TODO need to define evaluate for 'cons
-(define (evaluate expression)
+(define (evaluate expression) 
   (cond ((self-evaluating? expression) expression)
+        ((variable? expression) (lookup-variable-value expression))
         ((application? expression) (semantic-apply (evaluate (operator expression)) (operands expression)))
         (else 'error)))
 
 (define (self-evaluating? expression)
   (or (equal? expression 0) (equal? expression 1)))
+
+(define variable? symbol?)
+
+
+(define (lookup-variable-value expression) 'TODO)
 
 (define (semantic-apply procedure arguments)
   (cond ((primitive-procedure? procedure) (apply-primitive-procedure procedure arguments))
@@ -22,7 +27,14 @@
 
 (define (apply-semantics procedure arguments) 'TODOb)
 
-(define (compound-procedure? procedure) 'TODOc)
+(define (compound-procedure? procedure) (tagged-list? procedure 'procedure)) ;;TODO add lambda to language in order to test this
+
+(define (tagged-list? object tag)
+  (if (pair? object)
+      (eq? (car object) tag)
+      #f))
+
+
 
 (define (learn-semantics-and-apply procedure arguments) 'TODOd)
 

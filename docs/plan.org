@@ -1,5 +1,6 @@
 * next
-define evaluate for 'cons i.e. primitive procedures
+** implement lookup-variable-value
+*** add environment as an argument to evaluate
 * outline
 ** interpreter
 *** features

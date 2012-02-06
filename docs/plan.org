@@ -1,6 +1,12 @@
 * next
+** test evaluate on expression '(cons 1 '())
+how do you find the current directory from the repl?
+* past
+currently trying to get (evaluate 'cons) to work
 ** implement lookup-variable-value
-*** add environment as an argument to evaluate
+*** DONE implement scan
+*** DONE write test for scan
+more generally make an environment for testing eval
 * outline
 ** interpreter
 *** features

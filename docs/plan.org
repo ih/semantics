@@ -1,6 +1,8 @@
 * next
 ** test evaluate on expression '(cons 1 '())
-how do you find the current directory from the repl?
+use the interactive debugger http://www.gnu.org/software/guile/docs/docs-1.8/guile-ref/Interactive-Debugger.html
+*** implement apply-primitive procedure
+** explore the idea of pushing forward a lambda abstraction as "unification"
 * past
 currently trying to get (evaluate 'cons) to work
 ** implement lookup-variable-value

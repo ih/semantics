@@ -42,13 +42,37 @@
             (lookup-variable-value variable (enclosing-environment environment))))))
 
 (define (semantic-apply procedure arguments)
-  (cond ((primitive-procedure? procedure) (apply-primitive-procedure procedure arguments))
-        ((semantics-known? procedure) (apply-semantics procedure arguments))
-        ((compound-procedure? procedure) (learn-semantics-and-apply procedure arguments))))
+  (begin (learn-semantics! procedure arguments)
+         (apply-semantics procedure arguments)))
+  ;; (cond ((primitive-procedure? procedure) (apply-primitive-procedure procedure arguments))
+  ;;       ((semantics-known? procedure) (apply-semantics procedure arguments))
+  ;;       ((compound-procedure? procedure) (learn-semantics-and-apply procedure arguments))))
 
-(define (primitive-procedure? procedure) (equal? procedure 'cons))
+;;TODO should this take an environment?
+(define (learn-semantics! procedure arguments)
+  (let* ((output (apply procedure arguments))
+         (current-semantics (semantics-lookup procedure))
+         (pre-condition (get-pre-condition current-semantics))
+         (post-condition (get-post-condition current-semantics)))
+    (begin
+      (abstract! procedure pre-condition arguments)
+      (abstract! procedure post-condition output)
+      (unify-conditions! procedure))))
 
-(define (apply-primitive-procedure procedure arguments) 'applying-primitive) ;;TODO implement
+
+(define (semantics-lookup procedure) 'TODOe)
+
+(define (get-pre-condition current-semantics) 'TODOf)
+
+(define (get-post-condition current-semantics) 'TODOg)
+
+(define (abstract! procedure current-abstraction new-instance) 'TODOh)
+
+(define (unify-conditions! procedure) 'TODOi)
+
+(define (primitive-procedure? procedure) (equal? procedure cons))
+
+(define (apply-primitive-procedure procedure arguments) 'applying-primitive) 
 
 (define (semantics-known? procedure) 'TODOa)
 
@@ -65,13 +89,16 @@
 
 (define application? pair?)
 
+;;move to library
+(define rest cdr)
+
 (define operator first)
 
 (define operands rest)
 
-;;move to library
-(define rest cdr)
 
 
 
 
+;;tests
+(evaluate '(cons 1 '()) global-environment)

@@ -142,7 +142,23 @@ perhaps after evaluation,
 ****************** remove propositions if known true and possibly-deleted
 ************** DONE then disjoin the results from each conditional effect 
 each conditional effect represents the creation for a different possible set of states so we create a disjunction
-**** DONE hierarchical planning algorithm
+
+********** how would this work with lambda calculus as the representation
+*********** what is the equivalent of a conjunction
+lambda abstraction is a constraint that represents a set of states much like a conjunction
+
+perhaps "pushing forward" is variable unification(? or more accurately matching variables to variables) between two different expressions
+*********** what is the equivalent of a disjunction
+branching/flow control statements are probably the analog of the disjunction.  The disjunction represents possible sets of states while branching statements also represent different sets of states via different computations
+
+e.g.
+
+(if condition
+  (cons x 1)
+  (cons x 3))
+
+the two sets of states are (cons x 1) and (cons x 3)
+  **** DONE hierarchical planning algorithm
 top-level plans are generated and checked to see if their complete description complete description show them successful.  sound descriptions are also checked to determine whether they are definitely successful, in which case they are decomposed into a primitive refinement, otherwise they are refined and checked again against their complete and sound descriptions
 ****** DONE how does HierarchicalForwardSearch(s_0,G,H) work?
 generates sets of top-level plans and stops if a successful one is found.  these sets are passed to FindPrimRef.  in the recursive case a limit on the amount a plan can be refined to prevent infinite recursion.

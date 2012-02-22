@@ -8,6 +8,13 @@
       (hash-table-set! start-frame 'cons cons)
       (list start-frame))))
 
+(define semantics (make-hash-table))
+
+;;; TODO is empty list the right thing for empty semantics
+(define empty-semantics (list '() '()))
+
+
+
 (define (evaluate expression environment) 
   (cond ((self-evaluating? expression) expression)
         ((variable? expression) (lookup-variable-value expression environment))
@@ -59,12 +66,22 @@
       (abstract! procedure post-condition output)
       (unify-conditions! procedure))))
 
+;;; for now keep semantics for all procedures in a global hash-table; in future this datastructure might change to address the compositional nature of semantics
+(define (semantics-lookup procedure)
+  (define (add-procedure-to-semantics!)
+    (begin)
+    (hash-table-set! semantics procedure empty-semantics)
+    (hash-table-ref semantics procedure))
+  (hash-table-ref semantics procedure add-procedure-to-semantics!))
 
-(define (semantics-lookup procedure) 'TODOe)
 
-(define (get-pre-condition current-semantics) 'TODOf)
+(define get-pre-condition first)
 
-(define (get-post-condition current-semantics) 'TODOg)
+(define get-post-condition second)
+
+;;;test for semantics-lookup
+;; (define test-lookup (semantics-lookup 'cons))
+;; (get-pre-condition test-lookup)
 
 (define (abstract! procedure current-abstraction new-instance) 'TODOh)
 

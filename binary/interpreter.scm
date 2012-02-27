@@ -1,6 +1,10 @@
-(use-modules (srfi srfi-1)
-             (srfi srfi-69)
-             (srfi srfi-34))
+(require srfi/1)
+(require srfi/69)
+(require srfi/34)
+(require "test-module.scm")
+
+(define PRE 'pre)
+(define POST 'post)
 
 (define global-environment
   (let* ((start-frame (make-hash-table)))
@@ -60,10 +64,12 @@
   (let* ((output (apply procedure arguments))
          (current-semantics (semantics-lookup procedure))
          (pre-condition (get-pre-condition current-semantics))
-         (post-condition (get-post-condition current-semantics)))
+         (pre-condition-abstraction (abstract pre-condition arguments))
+         (post-condition (get-post-condition current-semantics))
+         (post-condition-abstraction (abstract post-condition output)))
     (begin
-      (abstract! procedure pre-condition arguments)
-      (abstract! procedure post-condition output)
+      (update-semantics! PRE procedure pre-condition-abstraction)
+      (update-semantics! POST procedure post-condition-abstraction)
       (unify-conditions! procedure))))
 
 ;;; for now keep semantics for all procedures in a global hash-table; in future this datastructure might change to address the compositional nature of semantics
@@ -83,7 +89,20 @@
 ;; (define test-lookup (semantics-lookup 'cons))
 ;; (get-pre-condition test-lookup)
 
-(define (abstract! procedure current-abstraction new-instance) 'TODOh)
+(define abstract least-general-generalization) ;;defining this level of abstraction will be useful for swapping out different methods for generalizing between two expressions
+
+;;TODO put various implementations of abstract into their own module
+(define (least-general-generalization expression-1 expression-2)
+  (cond ((null? expression-1) '())
+        ((not (= (length expression-1) (length expression-2))) (new-variable)) ;;TODO is this condition necessary? how would relaxing it help?
+        ((eq? (root expression-1) (root expression-2)) (cons (root expression-1) (map least-general-generalization (cdr expression-1) (cdr-expression-2)))))) ;;TODO cache root if costly
+
+
+
+(define root car)
+
+;;TODO put all semantics related functionality into it's own module
+(define (update-semantics! POST procedure post-condition-abstraction) 'TODOj)
 
 (define (unify-conditions! procedure) 'TODOi)
 

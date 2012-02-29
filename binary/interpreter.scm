@@ -1,7 +1,10 @@
-(require srfi/1)
-(require srfi/69)
-(require srfi/34)
-(require "test-module.scm")
+(require srfi/1
+         srfi/69
+         srfi/34
+         "test-module.scm"
+         "sym.scm")
+
+
 
 (define PRE 'pre)
 (define POST 'post)
@@ -94,10 +97,11 @@
 ;;TODO put various implementations of abstract into their own module
 (define (least-general-generalization expression-1 expression-2)
   (cond ((null? expression-1) '())
-        ((not (= (length expression-1) (length expression-2))) (new-variable)) ;;TODO is this condition necessary? how would relaxing it help?
+        ((not (= (length expression-1) (length expression-2))) (new-variable!)) ;;TODO is this condition necessary? how would relaxing it help?
         ((eq? (root expression-1) (root expression-2)) (cons (root expression-1) (map least-general-generalization (cdr expression-1) (cdr-expression-2)))))) ;;TODO cache root if costly
 
-
+(define (new-variable!)
+  ())
 
 (define root car)
 

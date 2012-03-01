@@ -3,7 +3,7 @@
 
 #lang racket
 
-(provide sym! reset-symbol-indizes! set-symbol-index!)
+(provide sym!)
 
 (require srfi/1
          srfi/69)
@@ -32,4 +32,6 @@
 (define (get-count symbol-counts tag)
   (if (hash-table-exists? symbol-counts tag)
       (hash-table-ref symbol-counts tag)
-      (hash-table-set! symbol-counts tag 0)))
+      (begin
+        (hash-table-set! symbol-counts tag 0)
+        0)))

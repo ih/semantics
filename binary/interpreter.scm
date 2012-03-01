@@ -1,8 +1,8 @@
 (require srfi/1
          srfi/69
          srfi/34
-         "test-module.scm"
-         "sym.scm")
+         "sym.scm"
+         racket/trace)
 
 
 
@@ -95,13 +95,25 @@
 (define abstract least-general-generalization) ;;defining this level of abstraction will be useful for swapping out different methods for generalizing between two expressions
 
 ;;TODO put various implementations of abstract into their own module
-(define (least-general-generalization expression-1 expression-2)
-  (cond ((null? expression-1) '())
-        ((not (= (length expression-1) (length expression-2))) (new-variable!)) ;;TODO is this condition necessary? how would relaxing it help?
-        ((eq? (root expression-1) (root expression-2)) (cons (root expression-1) (map least-general-generalization (cdr expression-1) (cdr-expression-2)))))) ;;TODO cache root if costly
+(trace least-general-generalization)
+(least-general-generalization '3 '(+ 4 5))
+(least-general-generalization '(+ 4 5) '3)
 
+(least-general-generalization '(+ 2 2) '(+ 2 3))
+(least-general-generalization 2 2)
+(define (least-general-generalization expression-1 expression-2)
+  (cond ((not (list? expression-1)) (if (eq? expression-1 expression-2) expression-1 (new-variable!))) ;;TODO have new-variable! also save instances of the variable or create a layer over new-variable! that does it
+        ((not (list? expression-2)) (new-variable!))
+        ((null? expression-1) '())
+        ((not (= (length expression-1) (length expression-2))) (new-variable!)) ;;TODO is this condition necessary? how would relaxing it help?
+        ((eq? (root expression-1) (root expression-2)) (cons (root expression-1) (map least-general-generalization (cdr expression-1) (cdr expression-2)))))) ;;TODO cache root if costly
+
+(define root car)
+
+
+(new-variable!)
 (define (new-variable!)
-  ())
+  (sym! 'V))
 
 (define root car)
 

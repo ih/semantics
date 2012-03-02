@@ -15,7 +15,7 @@
       (hash-table-set! start-frame 'cons cons)
       (list start-frame))))
 
-(define semantics (make-hash-table))
+(define all-semantics (make-hash-table))
 
 ;;; TODO is empty list the right thing for empty semantics
 (define empty-semantics (list '() '()))
@@ -71,36 +71,43 @@
          (post-condition (get-post-condition current-semantics))
          (post-condition-abstraction (abstract post-condition output)))
     (begin
-      (update-semantics! PRE procedure pre-condition-abstraction)
-      (update-semantics! POST procedure post-condition-abstraction)
+      (set-pre-condition! procedure pre-condition-abstraction)
+      (set-post-condition! procedure post-condition-abstraction)
       (unify-conditions! procedure))))
 
 ;;; for now keep semantics for all procedures in a global hash-table; in future this datastructure might change to address the compositional nature of semantics
 (define (semantics-lookup procedure)
   (define (add-procedure-to-semantics!)
     (begin)
-    (hash-table-set! semantics procedure empty-semantics)
-    (hash-table-ref semantics procedure))
-  (hash-table-ref semantics procedure add-procedure-to-semantics!))
+    (hash-table-set! all-semantics procedure empty-semantics)
+    (hash-table-ref all-semantics procedure))
+  (hash-table-ref all-semantics procedure add-procedure-to-semantics!))
+
+(define (semantics-update! procedure new-semantics)
+  (hash-table-set! all-semantics procedure new-semantics))
 
 
 (define get-pre-condition first)
 
 (define get-post-condition second)
 
+(define create-semantics list)
+
+
+
 ;;;test for semantics-lookup
 ;; (define test-lookup (semantics-lookup 'cons))
 ;; (get-pre-condition test-lookup)
 
-(define abstract least-general-generalization) ;;defining this level of abstraction will be useful for swapping out different methods for generalizing between two expressions
+
 
 ;;TODO put various implementations of abstract into their own module
-(trace least-general-generalization)
-(least-general-generalization '3 '(+ 4 5))
-(least-general-generalization '(+ 4 5) '3)
+;; (trace least-general-generalization)
+;; (least-general-generalization '3 '(+ 4 5))
+;; (least-general-generalization '(+ 4 5) '3)
 
-(least-general-generalization '(+ 2 2) '(+ 2 3))
-(least-general-generalization 2 2)
+;; (least-general-generalization '(+ 2 2) '(+ 2 3))
+;; (least-general-generalization 2 2)
 (define (least-general-generalization expression-1 expression-2)
   (cond ((not (list? expression-1)) (if (eq? expression-1 expression-2) expression-1 (new-variable!))) ;;TODO have new-variable! also save instances of the variable or create a layer over new-variable! that does it
         ((not (list? expression-2)) (new-variable!))
@@ -108,17 +115,31 @@
         ((not (= (length expression-1) (length expression-2))) (new-variable!)) ;;TODO is this condition necessary? how would relaxing it help?
         ((eq? (root expression-1) (root expression-2)) (cons (root expression-1) (map least-general-generalization (cdr expression-1) (cdr expression-2)))))) ;;TODO cache root if costly
 
+(define abstract least-general-generalization) ;;defining this level of abstraction will be useful for swapping out different methods for generalizing between two expressions
+
 (define root car)
 
 
-(new-variable!)
+;;(new-variable!)
 (define (new-variable!)
   (sym! 'V))
 
 (define root car)
 
 ;;TODO put all semantics related functionality into it's own module
-(define (update-semantics! POST procedure post-condition-abstraction) 'TODOj)
+(set-pre-condition! 'add '(+ 2 3))
+(semantics-lookup 'add)
+
+;;TODO abstract commonality between set-pre-condition and set-post-condition
+(define (set-pre-condition! procedure pre-condition-abstraction)
+  (let* ([old-semantics (semantics-lookup procedure)]
+        [new-semantics (create-semantics pre-condition-abstraction (get-post-condition old-semantics))])
+    (semantics-update! procedure new-semantics)))
+
+(define (set-post-condition! procedure post-condition-abstraction) 
+  (let* ([old-semantics (semantics-lookup procedure)]
+        [new-semantics (create-semantics (get-pre-condition old-semantics) post-condition-abstraction)])
+    (semantics-update! procedure new-semantics)))
 
 (define (unify-conditions! procedure) 'TODOi)
 

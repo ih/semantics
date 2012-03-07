@@ -8,6 +8,7 @@
 
 (define PRE 'pre)
 (define POST 'post)
+(define INITIAL-CONDITION 'initial)
 
 (define global-environment
   (let* ((start-frame (make-hash-table)))
@@ -18,10 +19,12 @@
 (define all-semantics (make-hash-table))
 
 ;;; TODO is empty list the right thing for empty semantics
-(define empty-semantics (list '() '()))
+(define initial-semantics (list INITIAL-CONDITION INITIAL-CONDITION))
 
+(define (clear-semantics!)
+   (set! all-semantics (make-hash-table)))
 
-
+;;(evaluate '(cons 1 '()) global-environment)
 (define (evaluate expression environment) 
   (cond ((self-evaluating? expression) expression)
         ((variable? expression) (lookup-variable-value expression environment))
@@ -63,6 +66,12 @@
   ;;       ((compound-procedure? procedure) (learn-semantics-and-apply procedure arguments))))
 
 ;;TODO should this take an environment?
+;; (clear-semantics!)
+;; (learn-semantics! + '(2 3))
+
+;; (semantics-lookup +)
+;; (learn-semantics! + '(2 5))
+;; (semantics-lookup +)
 (define (learn-semantics! procedure arguments)
   (let* ((output (apply procedure arguments))
          (current-semantics (semantics-lookup procedure))
@@ -79,7 +88,7 @@
 (define (semantics-lookup procedure)
   (define (add-procedure-to-semantics!)
     (begin)
-    (hash-table-set! all-semantics procedure empty-semantics)
+    (hash-table-set! all-semantics procedure initial-semantics)
     (hash-table-ref all-semantics procedure))
   (hash-table-ref all-semantics procedure add-procedure-to-semantics!))
 
@@ -99,6 +108,13 @@
 ;; (define test-lookup (semantics-lookup 'cons))
 ;; (get-pre-condition test-lookup)
 
+;; (abstract '(+ 2 2) '(+ 2 3))
+;; (abstract 2 2)
+;; (abstract INITIAL-CONDITION '(+ 2 3))
+(define (abstract expression-1 expression-2)
+  (cond ((initial-condition? expression-1) expression-2)
+        ((initial-condition? expression-2) expression-1)
+        (else (least-general-generalization expression-1 expression-2)))) ;;defining this level of abstraction will be useful for swapping out different methods for generalizing between two expressions
 
 
 ;;TODO put various implementations of abstract into their own module
@@ -115,7 +131,10 @@
         ((not (= (length expression-1) (length expression-2))) (new-variable!)) ;;TODO is this condition necessary? how would relaxing it help?
         ((eq? (root expression-1) (root expression-2)) (cons (root expression-1) (map least-general-generalization (cdr expression-1) (cdr expression-2)))))) ;;TODO cache root if costly
 
-(define abstract least-general-generalization) ;;defining this level of abstraction will be useful for swapping out different methods for generalizing between two expressions
+
+
+(define (initial-condition? expression)
+  (eq? expression INITIAL-CONDITION))
 
 (define root car)
 
@@ -127,8 +146,8 @@
 (define root car)
 
 ;;TODO put all semantics related functionality into it's own module
-(set-pre-condition! 'add '(+ 2 3))
-(semantics-lookup 'add)
+;;(set-pre-condition! 'add '(+ 2 3))
+;;(semantics-lookup 'add)
 
 ;;TODO abstract commonality between set-pre-condition and set-post-condition
 (define (set-pre-condition! procedure pre-condition-abstraction)
@@ -173,5 +192,3 @@
 
 
 
-;;tests
-(evaluate '(cons 1 '()) global-environment)

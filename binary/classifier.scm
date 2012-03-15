@@ -1,3 +1,7 @@
+#lang racket
+
+(provide present-input)
+
 (require "generators.scm")
 ;;; classification interface
 (define INPUT-LENGTH 10)

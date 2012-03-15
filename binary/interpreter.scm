@@ -1,3 +1,7 @@
+#lang racket
+
+(provide evaluate)
+
 (require srfi/1
          srfi/69
          srfi/34
@@ -24,7 +28,8 @@
 (define (clear-semantics!)
    (set! all-semantics (make-hash-table)))
 
-;;(evaluate '(cons 1 '()) global-environment)
+
+;; (evaluate '(cons 1 '()) global-environment)
 (define (evaluate expression environment) 
   (cond ((self-evaluating? expression) expression)
         ((variable? expression) (lookup-variable-value expression environment))
@@ -143,7 +148,7 @@
 (define (new-variable!)
   (sym! 'V))
 
-(define root car)
+
 
 ;;TODO put all semantics related functionality into it's own module
 ;;(set-pre-condition! 'add '(+ 2 3))

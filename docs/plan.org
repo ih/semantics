@@ -17,9 +17,42 @@ output of functions can be partially determined based on the semantics
 **** learning semantics
 common sequences of operations are abstracted and added as functions in the language
 *** applications
-**** binary string generation
-generative model for binary strings
+**** agent architecture
+**** binary string classification
+classify binary strings, architect as a sequential decision problem?
+***** environment
+****** present input
+****** take in action
+****** give feedback
+***** agent architecture
+****** process input
+****** select action
+conditional based on inputs for selecting a different action?
+
+what does learning the semantics for an individual action in the single decision problem mean?
+
+creating a map from input output
+
+so what goes through the interpreter should be the decision and the input, not just the decision, the decision is the thing that should be evaluated, the input is part of the environment(?)
+****** learn from feedback
 **** warehouse world
 the domain presented in angelic semantics papers by russell's group
 ***** reimplement warehouse world
 ***** apply abstraction code to learning high level actions
+* overview
+** motivation
+*** high level/abstract actions beneficial in planning
+smaller space of plans
+*** planning over sets of states, refining individual actions
+*** learning sequences of actions is like programming/algorithm design
+*** function definition powerful tool in programming
+function as an abstraction of commonly repeated sequence of actions
+
+*** learning semantics for high level actions
+**** actions as state transitions
+**** high level actions as state-set transitions
+is this true?
+**** in angelic semantics DNF formula used to describe sets for pre and post conditions of an action
+allow for richer abstraction/language, bigger state sets
+
+shape as an example of the importance of higher order abstractions, flower example (brown base, long green stem, alternating red/yellow colored flowers)

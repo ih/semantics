@@ -34,6 +34,10 @@ what does learning the semantics for an individual action in the single decision
 creating a map from input output
 
 so what goes through the interpreter should be the decision and the input, not just the decision, the decision is the thing that should be evaluated, the input is part of the environment(?)
+
+do a search over actions to maximize goal using semantics
+******* TODO generate plan
+implement as reversing a computation
 ****** learn from feedback
 **** warehouse world
 the domain presented in angelic semantics papers by russell's group

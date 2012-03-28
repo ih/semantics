@@ -1,6 +1,6 @@
 #lang racket
 
-(provide present-input)
+(provide present-input classify)
 
 (require "generators.scm")
 ;;; classification interface

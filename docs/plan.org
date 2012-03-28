@@ -1,8 +1,7 @@
 * next
-** test evaluate on expression '(cons 1 '())
-use the interactive debugger http://www.gnu.org/software/guile/docs/docs-1.8/guile-ref/Interactive-Debugger.html
-*** implement apply-primitive procedure
-** explore the idea of pushing forward a lambda abstraction as "unification"
+** implement generate-plan
+write reverse evaluation
+keep in mind for classification this should probably create one step plans i.e. programs with a single operation
 * past
 currently trying to get (evaluate 'cons) to work
 ** implement lookup-variable-value
@@ -38,7 +37,12 @@ so what goes through the interpreter should be the decision and the input, not j
 do a search over actions to maximize goal using semantics
 ******* TODO generate plan
 implement as reversing a computation
-****** learn from feedback
+******** match desired output to post-conditions of actions
+start with the highest level actions first
+perform unification
+******** create a new possible plan for each match
+******** set precondition to be new goal and extend possible plans
+repeat until current input is reached as a precondition****** learn from feedback
 **** warehouse world
 the domain presented in angelic semantics papers by russell's group
 ***** reimplement warehouse world

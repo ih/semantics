@@ -64,3 +64,9 @@ is this true?
 allow for richer abstraction/language, bigger state sets
 
 shape as an example of the importance of higher order abstractions, flower example (brown base, long green stem, alternating red/yellow colored flowers)
+
+** approach
+*** planning as reverse interpretation
+The idea is to use the semantics developed while running the interpreter forward to create programs when we only have the input and output by matching the output to post-conditions of operators then seeing if the pre-condition of that operator matches the input
+
+the basic objects are potential programs (i.e. lists of operators)

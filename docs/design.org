@@ -1,0 +1,22 @@
+* objects
+** primtive action
+an action that has no further refinement
+** action
+actions can be primitive actions or a sequence of actions
+*** semantics
+**** environment
+**** pre-condition
+**** post-condition
+** action set
+a collection of learned actions for use in the future
+** state
+a nested list
+** problem
+a pair of initial state and goal state
+* operations
+** add to action set
+*** abstraction
+** search action set
+*** match-condition
+** generate action
+takes you from an initial state to a goal state

@@ -1,6 +1,6 @@
 #lang racket
 
-(provide evaluate)
+(provide evaluate least-general-generalization)
 
 (require srfi/1
          srfi/69
@@ -184,6 +184,7 @@
 
 (define (learn-semantics-and-apply procedure arguments) 'TODOd)
 
+
 (define application? pair?)
 
 ;;move to library
@@ -193,7 +194,15 @@
 
 (define operands rest)
 
+;;;back track from output to input
+;;;return a list of possible action sequences
+;;'(a) r1: c->a r2: b->a r3: b->c
 
-
+(define (reverse-evaluate input hypotheses environment)
+  (let* ((matches (find-matches all-semantics hypotheses))
+         (extended-plans (extend-plans input matches hypotheses)))
+    (if (equal? extended-plans hypotheses)
+        hypotheses
+        (reverse-evaluate input extended-plans environment))))
 
 

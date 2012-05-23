@@ -1,25 +1,34 @@
-(use-modules (srfi srfi-1)
-             (srfi srfi-69)
-             (srfi srfi-34))
-;;;scan tests
+(require rackunit "interpreter.scm")
+
+(check)
+
+;;;single-step plan
+
+;;;multi-step plan
 
 
-(define test-frame (make-hash-table))
-(hash-table-set! test-frame 'x 5)
-(hash-table-ref test-frame 'x)
+;; (use-modules (srfi srfi-1)
+;;              (srfi sr                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       fi-69)
+;;              (srfi srfi-34))
+;; ;;;scan tests
 
-(define variable 'y)
 
-(define (scan frame)
-    (guard (exception ((eq? exception 'key-error) (cons #f 'error)))
-           (cons #t (hash-table-ref frame variable (lambda () (raise 'key-error))))))
+;; (define test-frame (make-hash-table))
+;; (hash-table-set! test-frame 'x 5)
+;; (hash-table-ref test-frame 'x)
 
-(scan test-frame2)
+;; (define variable 'y)
 
-;;;lookup-variable-value test
-(define test-frame2 (make-hash-table))
-(hash-table-set! test-frame2 'y 3)
+;; (define (scan frame)
+;;     (guard (exception ((eq? exception 'key-error) (cons #f 'error)))
+;;            (cons #t (hash-table-ref frame variable (lambda () (raise 'key-error))))))
 
-(define test-environment (list test-frame test-frame2))
+;; (scan test-frame2)
 
-(lookup-variable-value 'y test-environment)
+;; ;;;lookup-variable-value test
+;; (define test-frame2 (make-hash-table))
+;; (hash-table-set! test-frame2 'y 3)
+
+;; (define test-environment (list test-frame test-frame2))
+
+;; (lookup-variable-value 'y test-environment)

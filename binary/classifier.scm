@@ -1,13 +1,15 @@
 #lang racket
 
-(provide present-input classify)
+(provide present-input feedback)
 
-(require "generators.scm")
+(require "generators.scm"
+         "basic-agent.scm")
 ;;; classification interface
 (define INPUT-LENGTH 10)
 (define GENERATORS (list flip alternate))
 (define generator-choices '())
-(define decisions '())
+
+
 
 ;; (present-input)
 ;; generator-choices
@@ -24,17 +26,12 @@
 (define (select-generator)
   (random-element GENERATORS))
 
-;; (classify flip)
-;; (classify alternate)
-;; decisions
-(define (classify decision)
-  (set! decisions (cons decision decisions)))
 
 ;; (feedback #t)
 ;; (feedback #f)
-;; decisions
+;; actions
 (define (feedback include-correct)
-  (let ((output (equal? (first decisions) (first generator-choices))))
+  (let ((output (equal? (first actions) (first generator-choices))))
     (if include-correct
         (list (first generator-choices) output)
         (list output))))

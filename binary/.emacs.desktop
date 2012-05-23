@@ -1,0 +1,183 @@
+;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Thu Apr 19 09:08:26 2012
+;; Desktop file format version 206
+;; Emacs version 23.2.1
+
+;; Global section:
+(setq desktop-missing-file-warning nil)
+(setq tags-file-name nil)
+(setq tags-table-list nil)
+(setq search-ring '("sema" "seman"))
+(setq regexp-search-ring nil)
+(setq register-alist nil)
+(setq file-name-history '("~/semantics/binary/" "~/semantics/binary/interpreter.scm" "~/semantics/binary/agent.scm" "~/semantics/binary/classifier.scm" "~/semantics/docs/design.org" "~/semantics/binary" "~/semantics/binary/" "~/inference/" "~/semantics/docs/design.org" "~/inference/" "~/semantics/only-data" "~/semantics/docs/design.org" "~/semantics/docs/" "~/semantics/binary/interpreter.scm" "~/semantics/docs/plan.org" "~/Dropbox/"))
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 206
+  "/home/ih/semantics/binary/interpreter.scm"
+  "interpreter.scm"
+  'scheme-mode
+  '(paredit-mode eldoc-mode geiser-autodoc-mode geiser-mode)
+  7224
+  '(7225 nil)
+  nil
+  nil
+  '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/home/ih/semantics/docs/design.org"
+  "design.org<2>"
+  'org-mode
+  nil
+  461
+  '(461 t)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines . t)))
+
+(desktop-create-buffer 206
+  "/home/ih/semantics/binary/agent.scm"
+  "agent.scm"
+  'scheme-mode
+  '(paredit-mode eldoc-mode geiser-autodoc-mode geiser-mode)
+  981
+  '(nil nil)
+  nil
+  nil
+  '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/home/ih/semantics/binary/classifier.scm"
+  "classifier.scm"
+  'scheme-mode
+  '(paredit-mode eldoc-mode geiser-autodoc-mode geiser-mode)
+  429
+  '(nil nil)
+  nil
+  nil
+  '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/home/ih/semantics/binary/construct.scm"
+  "construct.scm"
+  'scheme-mode
+  '(paredit-mode eldoc-mode geiser-autodoc-mode geiser-mode)
+  457
+  '(nil nil)
+  nil
+  nil
+  '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  nil
+  "binary"
+  'dired-mode
+  nil
+  491
+  '(nil nil)
+  t
+  '("/home/ih/semantics/binary/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "~"
+  'dired-mode
+  nil
+  1435
+  '(6828 nil)
+  t
+  '("/home/ih/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "inference"
+  'dired-mode
+  nil
+  160
+  '(nil nil)
+  t
+  '("/home/ih/inference/")
+  nil)
+
+(desktop-create-buffer 206
+  "/home/ih/inference/design.org"
+  "design.org"
+  'org-mode
+  nil
+  86
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (truncate-lines . t)))
+
+(desktop-create-buffer 206
+  nil
+  "docs"
+  'dired-mode
+  nil
+  353
+  '(nil nil)
+  t
+  '("/home/ih/semantics/docs/")
+  nil)
+
+(desktop-create-buffer 206
+  "/home/ih/semantics/docs/plan.org"
+  "plan.org"
+  'org-mode
+  '(visual-line-mode)
+  8
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  nil
+  "semantics"
+  'dired-mode
+  nil
+  207
+  '(nil nil)
+  t
+  '("/home/ih/semantics/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "Dropbox"
+  'dired-mode
+  nil
+  163
+  '(612 nil)
+  t
+  '("/home/ih/Dropbox/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "breakout labs proposal"
+  'dired-mode
+  nil
+  184
+  '(nil nil)
+  t
+  '("/home/ih/Dropbox/breakout labs proposal/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "code"
+  'dired-mode
+  nil
+  163
+  '(nil nil)
+  t
+  '("/home/ih/Dropbox/code/")
+  nil)
+

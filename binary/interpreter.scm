@@ -194,15 +194,41 @@
 
 (define operands rest)
 
+
+;;;tests for backtracking
+
+;; (define (reverse-evaluate input output environment)
+;;   (reverse-evaluate-helper input (list output) environment))
 ;;;back track from output to input
 ;;;return a list of possible action sequences
-;;'(a) r1: c->a r2: b->a r3: b->c
+;; (define (reverse-evaluate-helper input hypotheses environment)
+;;   (let* ((extended-plans (extend-plans input hypotheses environment))) 
+;;     (if (equal? extended-plans hypotheses)
+;;         hypotheses
+;;         (reverse-evaluate input extended-plans environment))))
 
-(define (reverse-evaluate input hypotheses environment)
-  (let* ((matches (find-matches all-semantics hypotheses))
-         (extended-plans (extend-plans input matches hypotheses)))
-    (if (equal? extended-plans hypotheses)
-        hypotheses
-        (reverse-evaluate input extended-plans environment))))
+;;; go over each hypothesis and create possible extensions for it, do this for each hypothesis
+;; (define (extend-plans input hypotheses environment)
+;;   (append (map (lambda (hypothesis) (extend-plan input hypothesis environment)) hypotheses)))
+
+;;;go through all the semantics and try to match the post-condition to the beginning of the plan
+;; (define (extend-plan input hypothesis environment)
+;;   (let* ([semantics-list (hash-table->alist all-semantics)])))
+  
+
+
+
+;;;returns a list of lists where each list corresponds to a matches for an individual hypothesis
+;; (define (all-hypotheses-matches all-semantics hypotheses)
+;;   (cond ((null? all-semantics) hypotheses)
+;;         (else (let ((unification (unify (first all-semantics))))))))
+;;;TODO change hypothesis matching functions to use map?
+;; (define (single-hypothesis-matches hypothesis all-semantics)
+;;   (map (lambda (semantics) (unify semantics hypothesis)) all-semantics))
+
+;; (define (unify semantics hypothesis)
+;;   )
+
+
 
 

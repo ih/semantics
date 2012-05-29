@@ -21,11 +21,14 @@
 ;;         (feedback #f))))
 
 ;TODO test import have agent be passed into process-inputs for testing purposes
-(define (process-inputs inputs)
-  (if (null? inputs)
+;;first argument is a list of input-goal pairs i.e. a list of tasks the agent should complete
+(define (process-tasks input-goal-pairs)
+  (if (null? input-goal-pairs)
       actions
-      (begin
-        (process-input (car inputs))
+      (let* ((current-input-goal-pair (car input-goal-pairs))
+             (input (car current-input-goal-pair))
+             (goal (cdr current-input-goal-pair)))
+        (process-input input)
         (record-action (select-action))
         (feedback #f)
-        (process-inputs (cdr inputs)))))
+        (process-inputs (cdr input-goal-pairs)))))

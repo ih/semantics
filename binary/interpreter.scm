@@ -107,7 +107,7 @@
 
 (define create-semantics list)
 
-
+(define get-operations hash-table-keys)
 
 ;;;test for semantics-lookup
 ;; (define test-lookup (semantics-lookup 'cons))
@@ -194,6 +194,20 @@
 
 (define operands rest)
 
+
+;;not worrying about backtracking for now, since binary classification is single-step
+(define (reverse-evaluate input output)
+  (let ([matched-rule (semantic-match input output all-semantics)])
+    (get-operation matched-rule)))
+
+(define (semantic-match input output semantics)
+  (let* ([operations (get-operations semantics)]
+         [output-matches (filter (lambda (operation) (unify output operation)) operations)]
+         [input-matches (filter (lambda (operation) (unify input output-matches)))])
+    (best-match input-matches)))
+
+(define (post-condition-match semantics)
+  (let* (post-condition )))
 
 ;;;tests for backtracking
 

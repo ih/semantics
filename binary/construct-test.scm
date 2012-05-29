@@ -1,17 +1,17 @@
 (require rackunit "construct.scm")
 (require "classifier.scm"
          "generators.scm"
-         "basic-agent.scm")
+         "agent.scm")
 
 
 
 
-(define test-inputs (list (present-input)))
+(define test-inputs (list (cons (present-input) 'REWARD)))
 (test-case
- "basic agent process-inputs"
+ "basic agent process-tasks"
  (begin
    (reset-actions!)
-   (check-equal? (process-inputs test-inputs) (list flip))))
+   (check-equal? (process-tasks test-inputs) (list flip))))
 
 ;;test for process-input is to see if eval of first thing in memory is the input
 test-inputs

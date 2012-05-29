@@ -1,6 +1,6 @@
 #lang racket
 
-(provide present-input feedback)
+(provide present-input feedback generator-choices)
 
 (require "generators.scm"
          "basic-agent.scm")

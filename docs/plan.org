@@ -1,4 +1,18 @@
 * next
+write test for semantic-match
+** DONE write test for select-action
+write basic test for generate-plan
+** DONE figure out how to reload a module in geiser mode (or repl)
+sent an email to the geiser email list
+
+** DONE test for process-input is to see if eval of first thing in memory is the input
+write test for process-input of agent.scm
+how would you do this without objects?
+** develop test cases for interaction-loop
+may require redesigning how interaction loop works e.g. by passing in a list of inputs
+*** DONE create a simple agent that chooses an arbitrary action
+*** DONE write a test case for process-inputs to make sure the loop is correct
+**** TODO2 make switching agents in/out easier by having it be an argument to process-inputs
 ** implement generate-plan
 write reverse evaluation
 keep in mind for classification this should probably create one step plans i.e. programs with a single operation
@@ -23,6 +37,7 @@ classify binary strings, architect as a sequential decision problem?
 ****** present input
 ****** take in action
 ****** give feedback
+
 ***** agent architecture
 ****** process input
 ****** select action
